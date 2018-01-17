@@ -1,0 +1,5 @@
+= veda
+
+Generate this with
+    veda rdoc
+After you have described your command line interface

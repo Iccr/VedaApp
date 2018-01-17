@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="nmi-tm-f5L">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Light.otf">
+            <string>Montserrat-Light</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--QR Scanner-->
+        <scene sceneID="5E8-S9-meX">
+            <objects>
+                <viewController storyboardIdentifier="QRCodeScannerViewController" title="QR Scanner" id="nmi-tm-f5L" customClass="QRCodeScannerViewController" customModule="B2BOrdering" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="gUG-tk-vvb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No QR Code Detected" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PKj-yY-jHf">
+                                <rect key="frame" x="0.0" y="637" width="375" height="30"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="0.49532350352112675" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="ngR-F2-HkS"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-Light" family="Montserrat" pointSize="15"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pay-bH-qQH">
+                                <rect key="frame" x="316" y="30" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="pay-bH-qQH" secondAttribute="height" multiplier="1:1" id="G0d-yl-9B9"/>
+                                    <constraint firstAttribute="width" constant="44" id="joF-Ir-Ny9"/>
+                                </constraints>
+                                <color key="tintColor" red="0.37647058820000001" green="0.69019607839999997" blue="0.33333333329999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" image="cross"/>
+                                <connections>
+                                    <action selector="close:" destination="nmi-tm-f5L" eventType="touchUpInside" id="h4b-Wl-cwS"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="79Q-8r-vF8" firstAttribute="trailing" secondItem="PKj-yY-jHf" secondAttribute="trailing" id="28M-XW-WHG"/>
+                            <constraint firstItem="pay-bH-qQH" firstAttribute="top" secondItem="79Q-8r-vF8" secondAttribute="top" constant="10" id="CtP-nS-g7b"/>
+                            <constraint firstItem="79Q-8r-vF8" firstAttribute="bottom" secondItem="PKj-yY-jHf" secondAttribute="bottom" id="XbB-3i-LLY"/>
+                            <constraint firstItem="79Q-8r-vF8" firstAttribute="trailing" secondItem="pay-bH-qQH" secondAttribute="trailing" constant="15" id="slv-zp-aKh"/>
+                            <constraint firstItem="PKj-yY-jHf" firstAttribute="leading" secondItem="79Q-8r-vF8" secondAttribute="leading" id="tsS-C7-ljE"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="79Q-8r-vF8"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="YoB-Nz-6mb"/>
+                    <connections>
+                        <outlet property="closeButton" destination="pay-bH-qQH" id="MAd-2c-Ap4"/>
+                        <outlet property="messageLabel" destination="PKj-yY-jHf" id="MSs-Pz-xHS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EM6-Ir-349" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="188" y="217"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="cross" width="22" height="22"/>
+    </resources>
+</document>

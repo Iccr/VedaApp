@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+require 'gli'
+begin # XXX: Remove this begin/rescue before distributing your app
+require 'veda'
+rescue LoadError
+  STDERR.puts "In development, you need to use `bundle exec bin/veda` to run your app"
+  STDERR.puts "At install-time, RubyGems will make sure lib, etc. are in the load path"
+  STDERR.puts "Feel free to remove this message from bin/veda now"
+  exit 64
+end
+
+include GLI::App
+
+
+command :generate do |c|
+  c.desc 'Generate'
+  c.switch :qr
+
+  c.action do |global_options,options,args|
+
+    if options[:qr]
+      puts 'generate qr'
+      puts args.first
+      # raise 'cant help at this time'
+    end
+
+  end
+end
+
+
+on_error do |exception|
+  puts 'error occured'
+  true
+end
+
+exit run(ARGV)
