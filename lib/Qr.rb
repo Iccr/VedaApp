@@ -2,27 +2,26 @@ module QR
   class Qr
     require 'fileutils'
     def generate_qr path
-      puts 'qrqr'
       qr_storyboard_path = root + '/lib/QRCodeScanner/QRScanner.storyboard'
       qr_viewcontroller_path = root + '/lib/QRCodeScanner/QRCodeScannerViewController.swift'
       viewcontroller_extension_path = root + '/lib/QRCodeScanner/UIViewControllerExtension.swift'
       dest_folder = dest_folder_path path
-      puts dest_folder
-
-      FileUtils.cp(qr_storyboard_path, dest_folder)
-      FileUtils.cp(qr_viewcontroller_path, dest_folder)
-      FileUtils.cp(viewcontroller_extension_path, dest_folder)
-
-      puts "successfully generated qr scanner in path: #{dest_folder}"
+      copy qr_storyboard_path, dest_folder
+      copy qr_viewcontroller_path, dest_folder
+      copy viewcontroller_extension_path, dest_folder
       viewcontroller_name = viewcontroller_name path
+      write(extension viewcontroller_name, path)
+      puts "successfully generated qr scanner in path: #{dest_folder}"
+    end
 
-      puts viewcontroller_name
-
+    def write extension, path
       f = File.open(path, 'a')
-      f.write(extension viewcontroller_name)
+      f.write(extension)
       f.close
-      fileContent = File.readlines(path)
-      # puts fileContent
+    end
+
+    def copy src_path, dest_path
+      FileUtils.cp(src_path, dest_path)
     end
 
     def root
