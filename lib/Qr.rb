@@ -2,8 +2,8 @@ module QR
   class Qr
     require 'fileutils'
     def generate_qr path
-      qr_storyboard_path = root + '/lib/QRCodeScanner/QRScanner.storyboard'
-      qr_viewcontroller_path = root + '/lib/QRCodeScanner/QRCodeScannerViewController.swift'
+      qr_storyboard_path = root + '/lib/VedaQRScanner/VedaQr.storyboard'
+      qr_viewcontroller_path = root + '/lib/VedaQRScanner/VedaQRScannerViewController.swift'
       viewcontroller_extension_path = root + '/lib/QRCodeScanner/UIViewControllerExtension.swift'
       dest_folder = dest_folder_path path
       copy qr_storyboard_path, dest_folder

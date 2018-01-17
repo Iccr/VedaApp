@@ -16,12 +16,9 @@ extension UIViewController {
         }
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
-
         }
-
         deleteActionSheetController.addAction(deleteAction)
         deleteActionSheetController.addAction(cancelAction)
-
         self.present(deleteActionSheetController, animated: true, completion: nil)
     }
 

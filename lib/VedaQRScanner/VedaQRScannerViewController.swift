@@ -8,12 +8,12 @@
 import UIKit
 import AVFoundation
 
-class QRCodeScannerViewController: UIViewController {
+class VedaQRScannerViewController: UIViewController {
     // Mark:- Properties
     var captureSession: AVCaptureSession?
     var videoPreviewLayer: AVCaptureVideoPreviewLayer?
     var qrCodeFrameView: UIView?
-    var onObtained: ((QRCodeScannerViewController, String) -> ())?
+    var onObtained: ((VedaQRScannerViewController, String) -> ())?
 
     // Mark:- Outlets
     @IBOutlet weak var closeButton: UIButton!
@@ -25,6 +25,7 @@ class QRCodeScannerViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         checkPermission()
     }
 
@@ -54,7 +55,6 @@ class QRCodeScannerViewController: UIViewController {
         if self.setupAvCapture() {
             setupOutput()
             setupVideoLayer()
-            // Start video capture.
             captureSession?.startRunning()
             setupQRCodeFrameView()
             self.view.bringSubview(toFront: messageLabel)
@@ -104,7 +104,7 @@ class QRCodeScannerViewController: UIViewController {
     }
 }
 
-extension QRCodeScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
+extension VedaQRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         if metadataObjects.count == 0 {
             qrCodeFrameView?.frame = CGRect.zero
@@ -114,7 +114,6 @@ extension QRCodeScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         // Get the metadata object.
         let metadataObj = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
         if metadataObj.type == AVMetadataObject.ObjectType.qr {
-            // If the found metadata is equal to the QR code metadata then update the status label's text and set the bounds
             let qrCodeObject = videoPreviewLayer?.transformedMetadataObject(for: metadataObj)
             qrCodeFrameView?.frame = qrCodeObject!.bounds
             if metadataObj.stringValue != nil {
@@ -126,7 +125,6 @@ extension QRCodeScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         }
     }
 }
-
 
 struct PermissionHelper {
     static func isAllowedToRecordVideo(completion: @escaping (Bool) -> ()) {
