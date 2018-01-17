@@ -1,3 +1,6 @@
+//  Created by shishir sapkota on 1/17/18.
+//  Copyright © 2018 ccr. All rights reserved.
+//
 //  QRCodeScannerViewController.swift
 //  Created by Iccr
 // https://github.com/Iccr
@@ -22,7 +25,7 @@ class QRCodeScannerViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-         checkPermission()
+        checkPermission()
     }
 
     // Mark:- @IBActions
@@ -37,7 +40,7 @@ class QRCodeScannerViewController: UIViewController {
             if isAllowed {
                 self.openQr()
             }else {
-                self.alertWithOkCancel(message: "error_camera_permission".localized(), okAction: {
+                self.alertWithOkCancel(message: "Camera access denied. Do you want to change the permission from settings?", okAction: {
                     let url = URL(string: UIApplicationOpenSettingsURLString)!
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
                 }, cancelAction: {
@@ -105,7 +108,7 @@ extension QRCodeScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         if metadataObjects.count == 0 {
             qrCodeFrameView?.frame = CGRect.zero
-            messageLabel.text = "noQR".localized()
+            messageLabel.text = "noQR"
             return
         }
         // Get the metadata object.
@@ -130,15 +133,4 @@ struct PermissionHelper {
         let status = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
         completion(status != .denied && status != .restricted)
     }
-
-    static func isAllowedToRecordSound(completion: @escaping (Bool) -> ()) {
-        AVAudioSession.sharedInstance().requestRecordPermission(completion)
-    }
-
-    static func isAllowedToShowGallary(completion: @escaping (Bool) -> ()) {
-        PHPhotoLibrary.requestAuthorization { (status) in
-            completion(status == .authorized)
-        }
-    }
-
 }
