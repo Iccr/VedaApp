@@ -4,13 +4,14 @@ module QR
     def generate_qr path
       qr_storyboard_path = root + '/lib/VedaQRScanner/VedaQr.storyboard'
       qr_viewcontroller_path = root + '/lib/VedaQRScanner/VedaQRScannerViewController.swift'
-      viewcontroller_extension_path = root + '/lib/QRCodeScanner/UIViewControllerExtension.swift'
+      viewcontroller_extension_path = root + '/lib/VedaQRScanner/UIViewControllerExtension.swift'
+
       dest_folder = dest_folder_path path
       copy qr_storyboard_path, dest_folder
       copy qr_viewcontroller_path, dest_folder
       copy viewcontroller_extension_path, dest_folder
       viewcontroller_name = viewcontroller_name path
-      write(extension viewcontroller_name, path)
+      write((extension viewcontroller_name), path)
       puts "successfully generated qr scanner in path: #{dest_folder}"
     end
 
@@ -40,14 +41,14 @@ module QR
       extension = <<-EOS
     extension #{name} {
          func scan() {
-            self.openQRCodeScanner(source: self) { (viewcontroller, string) in
+            self.openVedaQRScanner(source: self) { (viewcontroller, string) in
                 let qrString = string
                 print(qrString)
             }
          }
 
-         func openQRCodeScanner(source: UIViewController, completion: @escaping (QRCodeScannerViewController, String)->()) {
-          if let vc = UIStoryboard(name: "QRScanner", bundle: nil).instantiateInitialViewController() as? QRCodeScannerViewController {
+         func openVedaQRScanner(source: UIViewController, completion: @escaping (VedaQRScannerViewController, String)->()) {
+          if let vc = UIStoryboard(name: "VedaQR", bundle: nil).instantiateInitialViewController() as? VedaQRScannerViewController {
               vc.onObtained = completion
               source.present(vc, animated: true, completion: nil)
           }
