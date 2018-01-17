@@ -2,6 +2,7 @@
 require 'gli'
 begin # XXX: Remove this begin/rescue before distributing your app
 require 'veda'
+require 'fileutils'
 rescue LoadError
   STDERR.puts "In development, you need to use `bundle exec bin/veda` to run your app"
   STDERR.puts "At install-time, RubyGems will make sure lib, etc. are in the load path"
@@ -20,8 +21,11 @@ command :generate do |c|
 
     if options[:qr]
       puts 'generate qr'
-      puts args.first
+      path = args.first
       # raise 'cant help at this time'
+      raise 'File name not given' if path.nil?
+      raise "#{path}. File does not exist." unless File.file?(path)
+      
     end
 
   end
@@ -29,7 +33,7 @@ end
 
 
 on_error do |exception|
-  puts 'error occured'
+  # puts 'error occured'
   true
 end
 
