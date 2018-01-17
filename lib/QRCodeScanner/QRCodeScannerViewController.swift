@@ -123,3 +123,22 @@ extension QRCodeScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
         }
     }
 }
+
+
+struct PermissionHelper {
+    static func isAllowedToRecordVideo(completion: @escaping (Bool) -> ()) {
+        let status = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
+        completion(status != .denied && status != .restricted)
+    }
+
+    static func isAllowedToRecordSound(completion: @escaping (Bool) -> ()) {
+        AVAudioSession.sharedInstance().requestRecordPermission(completion)
+    }
+
+    static func isAllowedToShowGallary(completion: @escaping (Bool) -> ()) {
+        PHPhotoLibrary.requestAuthorization { (status) in
+            completion(status == .authorized)
+        }
+    }
+
+}

@@ -64,6 +64,7 @@ extension #{name} {
      func scan() {
         self.openQRCodeScanner(source: self) { (viewcontroller, string) in
             let qrString = string
+            print(qrString)
         }
      }
 
