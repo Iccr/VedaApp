@@ -41,9 +41,11 @@ def generate_qr path
   require 'fileutils'
   qr_storyboard_path = self.root + '/lib/QRCodeScanner/QRScanner.storyboard'
   qr_viewcontroller_path = self.root + '/lib/QRCodeScanner/QRCodeScannerViewController.swift'
+  viewcontroller_extension_path = self.root + '/lib/QRCodeScanner/UIViewControllerExtension.swift'
   dest_folder = path.split('/').reverse.drop(1).reverse.join('/')
   FileUtils.cp(qr_storyboard_path, dest_folder)
   FileUtils.cp(qr_viewcontroller_path, dest_folder)
+  FileUtils.cp(viewcontroller_extension_path, dest_folder)
   puts "successfully generated qr scanner in path: #{dest_folder}"
   viewcontroller_name = path.split('/').reverse.first.split('.').first
 
