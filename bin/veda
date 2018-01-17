@@ -2,6 +2,7 @@
 require 'gli'
 begin # XXX: Remove this begin/rescue before distributing your app
 require 'veda'
+require 'QR'
 
 rescue LoadError
   STDERR.puts "In development, you need to use `bundle exec bin/veda` to run your app"
@@ -11,7 +12,7 @@ rescue LoadError
 end
 
 include GLI::App
-
+# inclu
 
 command :generate do |c|
   c.desc 'Generate'
@@ -38,46 +39,11 @@ on_error do |exception|
 end
 
 def generate_qr path
-  require 'fileutils'
-  qr_storyboard_path = self.root + '/lib/QRCodeScanner/QRScanner.storyboard'
-  qr_viewcontroller_path = self.root + '/lib/QRCodeScanner/QRCodeScannerViewController.swift'
-  viewcontroller_extension_path = self.root + '/lib/QRCodeScanner/UIViewControllerExtension.swift'
-  dest_folder = path.split('/').reverse.drop(1).reverse.join('/')
-  FileUtils.cp(qr_storyboard_path, dest_folder)
-  FileUtils.cp(qr_viewcontroller_path, dest_folder)
-  FileUtils.cp(viewcontroller_extension_path, dest_folder)
-  puts "successfully generated qr scanner in path: #{dest_folder}"
-  viewcontroller_name = path.split('/').reverse.first.split('.').first
-
-  f = File.open(path, 'a')
-  f.write(extension viewcontroller_name)
-  f.close
-  fileContent = File.readlines(path)
-  puts fileContent
+  qr = QR::Qr.new
+  qr.generate_qr path
 end
 
-def self.root
-    File.expand_path '../..', __FILE__
-end
 
-def extension name
-  extension = <<-EOS
-extension #{name} {
-     func scan() {
-        self.openQRCodeScanner(source: self) { (viewcontroller, string) in
-            let qrString = string
-            print(qrString)
-        }
-     }
 
-     func openQRCodeScanner(source: UIViewController, completion: @escaping (QRCodeScannerViewController, String)->()) {
-      if let vc = UIStoryboard(name: "QRScanner", bundle: nil).instantiateInitialViewController() as? QRCodeScannerViewController {
-          vc.onObtained = completion
-          source.present(vc, animated: true, completion: nil)
-      }
-  }
-}
-  EOS
-end
 
 exit run(ARGV)
