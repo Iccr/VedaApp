@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    Veda (0.0.1)
+    veda (0.0.1)
       gli (= 2.17.1)
 
 GEM
@@ -60,11 +60,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  Veda!
   aruba
   pry
   rake
   rdoc
+  veda!
 
 BUNDLED WITH
    1.14.4

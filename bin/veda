@@ -14,6 +14,8 @@ end
 include GLI::App
 # inclu
 
+desc 'Generates qr scanner'
+arg_name 'path to your ViewController.swift file from where qrscanner is to be presented.'
 command :generate do |c|
   c.desc 'Generate'
   c.switch :qr
