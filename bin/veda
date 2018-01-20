@@ -21,12 +21,19 @@ command :generate do |c|
   c.switch :Multimedia
   c.switch :model
 
-desc 'genefates model with given json file'
+desc 'genefates model in folder from, json file'
 c.command :model do |m|
   m.action do |global_options, options, args|
-    puts 'model command exec'
+    path = args.first
+    if path.nil?
+      raise 'json_file_path not given'
+    else
+      puts 'model command exec'
+    end
   end
 end
+
+
 desc 'genefates qr at specified path'
 c.command :qr do |q|
   q.action do |global_options, options, args|
