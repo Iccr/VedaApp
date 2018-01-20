@@ -2,7 +2,8 @@
 require 'gli'
 begin # XXX: Remove this begin/rescue before distributing your app
 require 'veda'
-require 'QR'
+require 'qR'
+require 'fetcher'
 
 rescue LoadError
   STDERR.puts "In development, you need to use `bundle exec bin/veda` to run your app"
@@ -28,7 +29,13 @@ c.command :model do |m|
     if path.nil?
       raise 'json_file_path not given'
     else
-      puts 'model command exec'
+      url = args[0]
+      headers = args[1]
+      fetcher = Fetcher.new(url, headers)
+      json = fetcher.fetch
+      puts json
+      # puts 'model command exec'
+
     end
   end
 end
