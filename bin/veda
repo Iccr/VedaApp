@@ -13,25 +13,69 @@ end
 
 include GLI::App
 # inclu
+subcommand_option_handling :normal
 
-desc 'Generates qr scanner'
-arg_name 'path to your ViewController.swift file from where qrscanner is to be presented.'
 command :generate do |c|
   c.desc 'Generate'
   c.switch :qr
+  c.switch :Multimedia
+  c.switch :model
 
-  c.action do |global_options,options,args|
-
-    if options[:qr]
-      puts 'generate qr'
+desc 'genefates model with given json file'
+c.command :model do |m|
+  m.action do |global_options, options, args|
+    puts 'model command exec'
+  end
+end
+desc 'genefates qr at specified path'
+c.command :qr do |q|
+  q.action do |global_options, options, args|
       path = args.first
-      # raise 'cant help at this time'
       raise 'File name not given' if path.nil?
       raise "#{path}. File does not exist." unless File.file?(path)
       generate_qr path
-    end
-
+    puts 'qr command exec'
   end
+end
+
+desc 'genefates multimedia at specified path'
+c.command :mm do |m|
+  m.action do |global_options, opotions, args|
+    puts 'multimedia file'
+  end
+end
+#   c.action do |global_options,options,args|
+#
+#     puts "global options is #{global_options}"
+#     puts "options is #{options}"
+#     puts "args is #{args}"
+#     puts "option[:qr] is #{options[:qr]}"
+#
+#     if options[:qr]
+#       puts 'generate qr inside optopm[:qr]'
+#       path = args.first
+#       raise 'File name  |m|not given' if path.nil?
+#       raise "#{path}. File does not exist." unless File.file?(path)
+#       generate_qr path
+#     end
+#
+#     if options[:model]
+#       puts 'generate model'
+#       json = args.first
+#       puts json
+#     end
+#
+# #  TODO_ generate multimedia path
+#     if options[:Multimeda]
+#       puts 'generate Multimeda manager'
+#       path = args.first
+#       raise 'File name not given' if path.nil?
+#       raise "#{path}. File does not exist." unless File.file?(path)
+#       generate_multimedia path
+#     end
+#
+#
+#   end
 end
 
 
@@ -45,7 +89,7 @@ def generate_qr path
   qr.generate_qr path
 end
 
+def generate_multimedia
 
-
-
+end
 exit run(ARGV)
