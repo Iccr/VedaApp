@@ -40,7 +40,7 @@ c.command :model do |m|
      file_name = "config.json"
       src_path = root + "/lib/#{file_name}"
       dest_path =  Dir.pwd
-      if File.exist?dest_path
+      if File.exist?(dest_path + "/" + "#{file_name}")
         puts " #{file_name} already exists in #{dest_path }"
       else
         puts "creating config file in #{dest_path}"
