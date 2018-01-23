@@ -164,6 +164,8 @@ DEFAULT
 
 
       class_model = <<-CLASS
+import ObjectMapper
+import RealmSwift
 class #{class_name}:#{@realm? " Object," : ""} Mappable {
 #{attribute_literals}
 #{@realm? realm_funcs : non_realm_funcs}
