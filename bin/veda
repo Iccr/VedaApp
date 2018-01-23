@@ -18,23 +18,18 @@ include GLI::App
 # inclu
 subcommand_option_handling :normal
 
+
+desc "Generators for swift model form json, qr scanner, and many more"
 command :generate do |c|
-  c.desc 'Generate'
-  c.switch :qr
-  c.switch :Multimedia
-  c.switch :model
-
-desc 'generates model in folder from, json file'
+c.desc "Generates model for swift from config file or json file"
 c.command :model do |m|
-
-  m.flag [:u,:url,'url_for_json']
-  m.switch [:r, :realm]
+  m.switch [:r, :realm, 'option_to_generate_models_for_realm']
   m.flag [:f, :file, 'file_path_to_json']
   # m.flag [:config, :c]
+  m.desc 'generates config.json file at working directory'
   m.command :config do |config|
     config.flag [:path, :p]
     config.action do |global_options, options, args|
-      puts 'config action'
       root = File.expand_path '../..', __FILE__  #todo make file handler class
      file_name = "config.json"
       src_path = root + "/lib/#{file_name}"
@@ -50,11 +45,8 @@ c.command :model do |m|
   end
 
   m.action do |global_options, options, args|
-    desc 'generates config file at specified path'
-
-    # puts 'model generated'
     if options[:f]
-      filepath = Dir.pwd + "/" + options[:f]
+      filepath = options[:f]
       puts filepath
       if File.exist?(filepath)
         puts "creating parser with file #{filepath} and #{options[:realm]}"
@@ -63,11 +55,11 @@ c.command :model do |m|
         puts "cannot find file: #{filepath}"
         puts "use: 'veda generate model config' to generate the configuration file at working directory."
       end
-    elsif  options[:u]
-      config_path = options[:u]
+    elsif
+      config_path = Dir.pwd + "/" + "config.json"
       if File.exist?config_path
-        puts "creating parser with url #{filepath} and #{options[:realm]}"
-        parser = Parser.new filepath, options[:realm]
+        puts "loading parser with config.json and realm = #{options[:realm]}"
+        parser = Parser.new config_path, options[:realm]
       else
         # create a parser
         puts "file does not exists: #{config_path}"
@@ -76,7 +68,7 @@ c.command :model do |m|
   end
 end
 
-desc 'generates qr at  path specified after -f flag'
+c.desc 'generates qrScanner at  path specified after -f flag'
 c.command :qr do |q|
   q.flag [:f,:filename,'file_path_for_viewcontroller']
   q.action do |global_options, options, args|
