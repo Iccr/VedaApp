@@ -34,7 +34,7 @@ class Parser
     if @url =~ URI::regexp
       self.fetch!
     else
-      puts "URL in config.json is not valid. pleas add valid url."
+      puts "ERROR: URL in config.json is not valid. pleas add valid url."
     end
   end
 
