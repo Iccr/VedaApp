@@ -77,11 +77,14 @@ c.command :qr do |q|
   q.flag [:f,:filename,'file_path_for_viewcontroller']
   q.action do |global_options, options, args|
       path = options[:f]
-      puts "no file path given. \n HINT: veda generate qr -f path_to_viewController.swift_file" if path.nil?
-      if File.file?(path)
-        generate_qr path
+      if path.nil?
+        puts "\nERROR: No file path given.  \n HINT: veda generate qr -f path_to_viewController.swift_file"
       else
-        raise "#{path}. File does not exist."
+        if File.file?(path)
+          generate_qr path
+        else
+          raise "#{path}. File does not exist."
+        end
       end
   end
 end
