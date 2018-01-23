@@ -67,6 +67,7 @@ c.command :model do |m|
       else
         # create a parser
         puts "file does not exists: #{config_path}"
+        puts "use: \n 'veda generate model config' \n to generate the configuration file at working directory."
       end
     end
   end
