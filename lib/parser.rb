@@ -31,7 +31,7 @@ class Parser
     config_json = JSON.parse(config)
     @url = config_json["url"]
     @headers = config_json["headers"]
-    if url =~ URI::regexp
+    if @url =~ URI::regexp
       self.fetch!
     else
       puts "URL in config.json is not valid. pleas add valid url."
