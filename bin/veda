@@ -2,7 +2,10 @@
 require 'gli'
 begin # XXX: Remove this begin/rescue before distributing your app
 require 'veda'
-require 'QR'
+require 'qR'
+# require "parser.rb"
+require 'parser'
+
 
 rescue LoadError
   STDERR.puts "In development, you need to use `bundle exec bin/veda` to run your app"
@@ -13,23 +16,86 @@ end
 
 include GLI::App
 # inclu
+subcommand_option_handling :normal
 
+
+desc "Generators for swift model form json, qr scanner, and many more"
 command :generate do |c|
-  c.desc 'Generate'
-  c.switch :qr
+c.desc "Generates model for swift from config file or json file"
+c.command :model do |m|
+  m.switch [:r, :realm, 'option_to_generate_models_for_realm']
+  m.flag [:f, :file, 'file_path_to_json']
 
-  c.action do |global_options,options,args|
-
-    if options[:qr]
-      puts 'generate qr'
-      path = args.first
-      # raise 'cant help at this time'
-      raise 'File name not given' if path.nil?
-      raise "#{path}. File does not exist." unless File.file?(path)
-      generate_qr path
+  # creates config.json
+  m.desc 'generates config.json file at working directory'
+  m.command :config do |config|
+    config.flag [:path, :p]
+    config.action do |global_options, options, args|
+      root = File.expand_path '../..', __FILE__  #todo make file handler class
+     file_name = "config.json"
+      src_path = root + "/lib/#{file_name}"
+      dest_path =  Dir.pwd
+      if File.exist?(dest_path + "/" + "#{file_name}")
+        puts " #{file_name} already exists in #{dest_path }"
+      else
+        puts "creating config file in #{dest_path}"
+        FileUtils.cp(src_path, dest_path)
+        puts "created #{file_name} to #{dest_path}"
+      end
     end
-
   end
+
+#create model
+  m.action do |global_options, options, args|
+    if options[:f]
+      filepath = options[:f]
+      puts filepath
+      if File.exist?(filepath)
+        puts "creating parser with file #{filepath} and #{options[:realm]}"
+        parser = Parser.new filepath, options[:realm]
+        parser.parse!
+      else
+        puts "cannot find file: #{filepath}"
+        puts "use: 'veda generate model config' to generate the configuration file at working directory."
+      end
+    elsif
+      config_path = Dir.pwd + "/" + "config.json"
+      if File.exist?config_path
+        puts "loading parser with config.json and realm = #{options[:realm]}"
+        parser = Parser.new config_path, options[:realm]
+        parser.load_from_config config_path
+      else
+        # create a parser
+        puts "file does not exists: #{config_path}"
+        puts "use: \n 'veda generate model config' \n to generate the configuration file at working directory."
+      end
+    end
+  end
+end
+
+c.desc 'generates qrScanner at  path specified after -f flag'
+c.command :qr do |q|
+  q.flag [:f,:filename,'file_path_for_viewcontroller']
+  q.action do |global_options, options, args|
+      path = options[:f]
+      if path.nil?
+        puts "\nERROR: No file path given.  \n HINT: veda generate qr -f path_to_viewController.swift_file"
+      else
+        if File.file?(path)
+          generate_qr path
+        else
+          raise "#{path}. File does not exist."
+        end
+      end
+  end
+end
+
+desc 'genefates multimedia at specified path'
+c.command :mm do |m|
+  m.action do |global_options, opotions, args|
+    puts 'multimedia file'
+  end
+end
 end
 
 
@@ -43,7 +109,7 @@ def generate_qr path
   qr.generate_qr path
 end
 
+def generate_multimedia
 
-
-
+end
 exit run(ARGV)

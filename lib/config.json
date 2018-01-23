@@ -1,0 +1,7 @@
+{
+  "url": "url",
+  "headers": {
+      "Authorization": "token",
+      "OtherHeaders": "add as your need"
+  }
+}
