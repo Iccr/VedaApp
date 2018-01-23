@@ -57,16 +57,15 @@ c.command :model do |m|
       filepath = Dir.pwd + "/" + options[:f]
       puts filepath
       if File.exist?(filepath)
-        puts "creating parser with fie #{filepath} and #{options[:realm]}"
+        puts "creating parser with file #{filepath} and #{options[:realm]}"
         parser = Parser.new filepath, options[:realm]
       else
         puts "cannot find file: #{filepath}"
-        puts "use: 'veda generate model config' to generate the configuration file."
+        puts "use: 'veda generate model config' to generate the configuration file at working directory."
       end
     elsif  options[:u]
       config_path = options[:u]
       if File.exist?config_path
-        puts "file does not exists: #{filepath}"
         puts "creating parser with url #{filepath} and #{options[:realm]}"
         parser = Parser.new filepath, options[:realm]
       else
@@ -77,12 +76,12 @@ c.command :model do |m|
   end
 end
 
-desc 'genefates qr at  path specified after -f flag'
+desc 'generates qr at  path specified after -f flag'
 c.command :qr do |q|
   q.flag [:f,:filename,'file_path_for_viewcontroller']
   q.action do |global_options, options, args|
       path = options[:f]
-      puts 'no file path given. generating in current working derictory' if path.nil?
+      puts "no file path given. \n HINT: veda generate qr -f path_to_viewController.swift_file" if path.nil?
       if File.file?(path)
         generate_qr path
       else
