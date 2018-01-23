@@ -17,7 +17,7 @@ examples:
 https://github.com/Iccr/VedaApp/wiki/QRScanner
 
 
-#### model generators: 
+#### Automatically Generate models from url: 
 
 https://github.com/Iccr/VedaApp/wiki/swift-model-generator
 
