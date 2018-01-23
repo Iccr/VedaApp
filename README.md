@@ -23,6 +23,6 @@ https://github.com/Iccr/VedaApp/wiki/swift-model-generator
 
 Feed back are appreciates. 
 
-Found a *bug*, please open an issue.
+Found a **bug**, please open an issue.
 
 Enjoy.
