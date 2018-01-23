@@ -29,7 +29,7 @@ c.command :model do |m|
 
   m.flag [:u,:url,'url_for_json']
   m.switch [:r, :realm]
-
+  m.flag [:f, :file, 'file_path_to_json']
   # m.flag [:config, :c]
   m.command :config do |config|
     config.flag [:path, :p]
