@@ -30,7 +30,28 @@ c.command :model do |m|
   m.flag [:u,:url,'url_for_json']
   m.switch [:r, :realm]
 
+  # m.flag [:config, :c]
+  m.command :config do |config|
+    puts 'config'
+    config.flag [:path, :p]
+    config.action do |global_options, options, args|
+      puts 'config action'
+      root = File.expand_path '../..', __FILE__  #todo make file handler class
+      src_path = root + "/lib/config.json"
+      dest_path =  Dir.pwd
+      if File.exist?dest_path
+        puts "file already exists: #{dest_path}"
+      else
+        puts "creating config file in #{dest_path}"
+        FileUtils.cp(src_path, dest_path)
+        puts "craeted config.json to #{dest_path}"
+      end
+    end
+  end
+
   m.action do |global_options, options, args|
+    desc 'generates config file at specified path'
+
     # puts 'model generated'
     if options[:f]
       filepath = options[:f]
