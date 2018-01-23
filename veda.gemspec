@@ -12,8 +12,8 @@ spec = Gem::Specification.new do |s|
 ")
   s.require_paths << 'lib'
   s.has_rdoc = true
-  s.extra_rdoc_files = ['README.rdoc','veda.rdoc']
-  s.rdoc_options << '--title' << 'veda' << '--main' << 'README.rdoc' << '-ri'
+  s.extra_rdoc_files = ['veda.rdoc']
+  s.rdoc_options << '--title' << 'veda' << '--main'  << '-ri'
   s.bindir = 'bin'
   s.executables << 'veda'
   s.add_development_dependency('rake')

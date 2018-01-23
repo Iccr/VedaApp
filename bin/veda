@@ -22,7 +22,7 @@ command :generate do |c|
   c.switch :Multimedia
   c.switch :model
 
-desc 'genefates model in folder from, json file'
+desc 'generates model in folder from, json file'
 c.command :model do |m|
   m.flag [:f,:filename,'file_path_for_json_file']
   m.flag [:u,:url,'url_for_json']
@@ -35,12 +35,15 @@ c.command :model do |m|
       if File.exist?filepath
         puts "file does not exists: #{filepath}"
       else
-        parser = Parser.new filepath, options[:r]
+        puts "creating parser with fie #{filepath} and #{options[:realm]}"
+        parser = Parser.new filepath, options[:realm]
       end
     elsif  options[:u]
       config_path = options[:f]
       if File.exist?config_path
         puts "file does not exists: #{filepath}"
+        puts "creating parser with fie #{filepath} and #{options[:realm]}"
+        parser = Parser.new filepath, options[:realm]
       else
         # create a parser
       end

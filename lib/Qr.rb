@@ -39,7 +39,7 @@ module QR
 
     def extension name
       extension = <<-EOS
-    extension #{name} {
+extension #{name} {
          func scan() {
             self.openVedaQRScanner(source: self) { (viewcontroller, string) in
                 let qrString = string
