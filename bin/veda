@@ -3,7 +3,9 @@ require 'gli'
 begin # XXX: Remove this begin/rescue before distributing your app
 require 'veda'
 require 'qR'
-require 'fetcher'
+# require "parser.rb"
+require 'parser'
+
 
 rescue LoadError
   STDERR.puts "In development, you need to use `bundle exec bin/veda` to run your app"
@@ -29,7 +31,7 @@ c.command :model do |m|
   m.switch [:r, :realm]
 
   m.action do |global_options, options, args|
-    puts 'model generated'
+    # puts 'model generated'
     if options[:f]
       filepath = options[:f]
       if File.exist?filepath
@@ -39,13 +41,14 @@ c.command :model do |m|
         parser = Parser.new filepath, options[:realm]
       end
     elsif  options[:u]
-      config_path = options[:f]
+      config_path = options[:u]
       if File.exist?config_path
         puts "file does not exists: #{filepath}"
-        puts "creating parser with fie #{filepath} and #{options[:realm]}"
+        puts "creating parser with url #{filepath} and #{options[:realm]}"
         parser = Parser.new filepath, options[:realm]
       else
         # create a parser
+        puts "file does not exists: #{config_path}"
       end
     end
   end

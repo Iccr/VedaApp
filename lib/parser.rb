@@ -1,6 +1,4 @@
 require 'json'
-require 'pp'
-require 'pry'
 require 'rest-client'
 
 
@@ -198,6 +196,3 @@ class Attribute
     result
   end
 end
-
-parser = Parser.new('new_input.json')
-parser.load_from_config("config.json")
