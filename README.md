@@ -21,8 +21,9 @@ https://github.com/Iccr/VedaApp/wiki/QRScanner
 https://github.com/Iccr/VedaApp/wiki/swift-model-generator
 
 
-Feed back are appreciates. 
+###### feedback are welcomed
 
-Found a **bug**, please open an issue.
+
+###### Found a **bug**, please open an issue.
 
 Enjoy.
