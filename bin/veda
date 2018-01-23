@@ -26,7 +26,7 @@ command :generate do |c|
 
 desc 'generates model in folder from, json file'
 c.command :model do |m|
-  m.flag [:f,:filename,'file_path_for_json_file']
+
   m.flag [:u,:url,'url_for_json']
   m.switch [:r, :realm]
 
@@ -77,14 +77,17 @@ c.command :model do |m|
   end
 end
 
-desc 'genefates qr at specified path'
+desc 'genefates qr at  path specified after -f flag'
 c.command :qr do |q|
+  q.flag [:f,:filename,'file_path_for_viewcontroller']
   q.action do |global_options, options, args|
-      path = args.first
-      raise 'File name not given' if path.nil?
-      raise "#{path}. File does not exist." unless File.file?(path)
-      generate_qr path
-    puts 'qr command exec'
+      path = options[:f]
+      puts 'no file path given. generating in current working derictory' if path.nil?
+      if File.file?(path)
+        generate_qr path
+      else
+        raise "#{path}. File does not exist."
+      end
   end
 end
 
