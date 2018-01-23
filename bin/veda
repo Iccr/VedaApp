@@ -1,18 +1,18 @@
 #!/usr/bin/env ruby
 require 'gli'
-begin # XXX: Remove this begin/rescue before distributing your app
+# begin # XXX: Remove this begin/rescue before distributing your app
 require 'veda'
 require 'qR'
 # require "parser.rb"
 require 'parser'
 
 
-rescue LoadError
-  STDERR.puts "In development, you need to use `bundle exec bin/veda` to run your app"
-  STDERR.puts "At install-time, RubyGems will make sure lib, etc. are in the load path"
-  STDERR.puts "Feel free to remove this message from bin/veda now"
-  exit 64
-end
+# rescue LoadError
+#   STDERR.puts "In development, you need to use `bundle exec bin/veda` to run your app"
+#   STDERR.puts "At install-time, RubyGems will make sure lib, etc. are in the load path"
+#   STDERR.puts "Feel free to remove this message from bin/veda now"
+#   exit 64
+# end
 
 include GLI::App
 # inclu

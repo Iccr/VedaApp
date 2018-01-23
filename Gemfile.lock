@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    veda (0.0.1)
+    veda-apps (0.0.3)
       gli (= 2.17.1)
 
 GEM
@@ -70,7 +70,7 @@ DEPENDENCIES
   rake
   rdoc
   rest-client
-  veda!
+  veda-apps!
 
 BUNDLED WITH
    1.14.4
