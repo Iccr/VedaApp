@@ -9,7 +9,7 @@ examples:
 
 ```veda generate qr -f path_to_view_controller```
 
-```veda generate model```
+```veda generate model input.json```
 
 ### Wikis
 #### QR scanner
