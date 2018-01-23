@@ -32,7 +32,6 @@ c.command :model do |m|
 
   # m.flag [:config, :c]
   m.command :config do |config|
-    puts 'config'
     config.flag [:path, :p]
     config.action do |global_options, options, args|
       puts 'config action'
@@ -55,12 +54,14 @@ c.command :model do |m|
 
     # puts 'model generated'
     if options[:f]
-      filepath = options[:f]
-      if File.exist?filepath
-        puts "file does not exists: #{filepath}"
-      else
+      filepath = Dir.pwd + "/" + options[:f]
+      puts filepath
+      if File.exist?(filepath)
         puts "creating parser with fie #{filepath} and #{options[:realm]}"
         parser = Parser.new filepath, options[:realm]
+      else
+        puts "cannot find file: #{filepath}"
+        puts "use: 'veda generate model config' to generate the configuration file."
       end
     elsif  options[:u]
       config_path = options[:u]
