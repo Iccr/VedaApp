@@ -25,7 +25,8 @@ c.desc "Generates model for swift from config file or json file"
 c.command :model do |m|
   m.switch [:r, :realm, 'option_to_generate_models_for_realm']
   m.flag [:f, :file, 'file_path_to_json']
-  # m.flag [:config, :c]
+
+  # creates config.json
   m.desc 'generates config.json file at working directory'
   m.command :config do |config|
     config.flag [:path, :p]
@@ -44,6 +45,7 @@ c.command :model do |m|
     end
   end
 
+#create model
   m.action do |global_options, options, args|
     if options[:f]
       filepath = options[:f]
@@ -51,6 +53,7 @@ c.command :model do |m|
       if File.exist?(filepath)
         puts "creating parser with file #{filepath} and #{options[:realm]}"
         parser = Parser.new filepath, options[:realm]
+        parser.parse!
       else
         puts "cannot find file: #{filepath}"
         puts "use: 'veda generate model config' to generate the configuration file at working directory."
@@ -60,6 +63,7 @@ c.command :model do |m|
       if File.exist?config_path
         puts "loading parser with config.json and realm = #{options[:realm]}"
         parser = Parser.new config_path, options[:realm]
+        parser.load_from_config config_path
       else
         # create a parser
         puts "file does not exists: #{config_path}"
