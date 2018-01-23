@@ -24,22 +24,29 @@ command :generate do |c|
 
 desc 'genefates model in folder from, json file'
 c.command :model do |m|
-  m.action do |global_options, options, args|
-    path = args.first
-    if path.nil?
-      raise 'json_file_path not given'
-    else
-      url = args[0]
-      headers = args[1]
-      fetcher = Fetcher.new(url, headers)
-      json = fetcher.fetch
-      puts json
-      # puts 'model command exec'
+  m.flag [:f,:filename,'file_path_for_json_file']
+  m.flag [:u,:url,'url_for_json']
+  m.switch [:r, :realm]
 
+  m.action do |global_options, options, args|
+    puts 'model generated'
+    if options[:f]
+      filepath = options[:f]
+      if File.exist?filepath
+        puts "file does not exists: #{filepath}"
+      else
+        parser = Parser.new filepath, options[:r]
+      end
+    elsif  options[:u]
+      config_path = options[:f]
+      if File.exist?config_path
+        puts "file does not exists: #{filepath}"
+      else
+        # create a parser
+      end
     end
   end
 end
-
 
 desc 'genefates qr at specified path'
 c.command :qr do |q|
