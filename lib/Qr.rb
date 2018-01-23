@@ -40,21 +40,21 @@ module QR
     def extension name
       extension = <<-EOS
 extension #{name} {
-         func scan() {
-            self.openVedaQRScanner(source: self) { (viewcontroller, string) in
-                let qrString = string
-                print(qrString)
-            }
-         }
+\tfunc scan() {
+\t\tself.openVedaQRScanner(source: self) { (viewcontroller, string) in
+\t\tlet qrString = string
+\t\tprint(qrString)
+\t\t}
+\t}
 
-         func openVedaQRScanner(source: UIViewController, completion: @escaping (VedaQRScannerViewController, String)->()) {
-          if let vc = UIStoryboard(name: "VedaQR", bundle: nil).instantiateInitialViewController() as? VedaQRScannerViewController {
-              vc.onObtained = completion
-              source.present(vc, animated: true, completion: nil)
-          }
-      }
-    }
-      EOS
+\tfunc openVedaQRScanner(source: UIViewController, completion: @escaping (VedaQRScannerViewController, String)->()) {
+\t\tif let vc = UIStoryboard(name: "VedaQR", bundle: nil).instantiateInitialViewController() as? VedaQRScannerViewController {
+\t\t\tvc.onObtained = completion
+\t\t\tsource.present(vc, animated: true, completion: nil)
+\t\t}
+\t}
+}
+EOS
     end
   end
 end
