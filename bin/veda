@@ -94,38 +94,6 @@ c.command :mm do |m|
     puts 'multimedia file'
   end
 end
-#   c.action do |global_options,options,args|
-#
-#     puts "global options is #{global_options}"
-#     puts "options is #{options}"
-#     puts "args is #{args}"
-#     puts "option[:qr] is #{options[:qr]}"
-#
-#     if options[:qr]
-#       puts 'generate qr inside optopm[:qr]'
-#       path = args.first
-#       raise 'File name  |m|not given' if path.nil?
-#       raise "#{path}. File does not exist." unless File.file?(path)
-#       generate_qr path
-#     end
-#
-#     if options[:model]
-#       puts 'generate model'
-#       json = args.first
-#       puts json
-#     end
-#
-# #  TODO_ generate multimedia path
-#     if options[:Multimeda]
-#       puts 'generate Multimeda manager'
-#       path = args.first
-#       raise 'File name not given' if path.nil?
-#       raise "#{path}. File does not exist." unless File.file?(path)
-#       generate_multimedia path
-#     end
-#
-#
-#   end
 end
 
 
