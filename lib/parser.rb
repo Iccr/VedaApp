@@ -162,10 +162,9 @@ DEFAULT
         mapping_literals += mapping_literal
       end
 
-
       class_model = <<-CLASS
 import ObjectMapper
-import RealmSwift
+#{@realm? "import RealmSwift\nimport ObjectMapper_Realm" : ""}
 
 class #{class_name}:#{@realm? " Object," : ""} Mappable {
 #{attribute_literals}
