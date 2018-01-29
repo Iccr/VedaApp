@@ -139,8 +139,7 @@ class Parser
 REALMCLASS
 
       non_realm_funcs = <<-DEFAULT
-\t\tinit?(map: Map) {
-\t\t\t\tself.init()
+\t\trequired init?(map: Map) {
 \t\t}
 DEFAULT
       # (map["friends"], ListTransform<User>())
