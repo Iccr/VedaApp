@@ -28,3 +28,6 @@ https://github.com/Iccr/VedaApp/wiki/swift-model-generator
 ###### Found a **bug**, please open an issue.
 
 Enjoy.
+
+##### License
+MIT
