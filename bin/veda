@@ -53,7 +53,7 @@ c.command :model do |m|
       if File.exist?(filepath)
         puts "creating parser with file #{filepath} and #{options[:realm]}"
         parser = Parser.new filepath, options[:realm]
-        parser.parse!
+        parser.parseForMoya!
       else
         puts "cannot find file: #{filepath}"
         puts "use: 'veda generate model config' to generate the configuration file at working directory."
