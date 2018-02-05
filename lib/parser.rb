@@ -199,9 +199,9 @@ CLASS
       mapping_literal = ""
       key_literal = ""
       if attribute.is_array
-        attribute_literal = "\tlet #{attribute.name.camelize}: [#{attribute.type.capitalize}]\n"
+        attribute_literal = "\tlet #{attribute.name.camelize}: [#{attribute.type.capitalize.camelize}]\n"
       else
-        attribute_literal = "\tlet #{attribute.name.camelize}: #{attribute.type.capitalize}\n"
+        attribute_literal = "\tlet #{attribute.name.camelize}: #{attribute.type.capitalize.camelize}\n"
       end
       mapping_literal = "\t\t#{attribute.name.camelize} = try map.from(Key.#{attribute.name.camelize})\n"
       key_literal = "\t\tstatic let #{attribute.name.camelize} = \"#{attribute.name}\"\n"
