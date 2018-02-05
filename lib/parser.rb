@@ -4,19 +4,19 @@ require 'uri'
 
 
 class String
-  def camelize
-    splitted = self.split('_')
-    camel_text = splitted[1..-1].collect(&:capitalize).join
-    camel_text = splitted.first.nil? ? self : (splitted.first + camel_text)
-    camel_text.unHyphoniezed
+    def camelize
+      filtered = self.split('_').select {|v| v != ""}
+      camel_text = filtered[1..-1].collect(&:capitalize).join
+      camel_text = filtered.first.nil? ? self : (filtered.first + camel_text)
+      camel_text.unHyphoniezed
+    end
+  
+    def unHyphoniezed
+      splitted = self.split('-')
+      camel_text = splitted[1..-1].collect(&:capitalize).join
+      splitted.first.nil? ? self : (splitted.first + camel_text)
+    end
   end
-
-  def unHyphoniezed
-    splitted = self.split('-')
-    camel_text = splitted[1..-1].collect(&:capitalize).join
-    splitted.first.nil? ? self : (splitted.first + camel_text)
-  end
-end
 
 class Parser
   def initialize path, realm=false
