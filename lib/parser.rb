@@ -85,35 +85,34 @@ class Parser
   def generate_attributes_literals json
     swiftClassAttributes = []
     swiftClass = ""
+    # take all hash
     if json.is_a? Hash
+      # loop on each key value pair
       json.each do |key, value|
+        # if value is not array or hash it is a attribute
         if !(value.is_a? Array) && !(value.is_a? Hash)
-          #  string = "#{get_attribute_literal_prefix}var #{key}: #{attribute_type value} = #{default_value value}\n"
-          # swiftClass =  swiftClass + string
           attribute = Attribute.new(key, "#{attribute_type value}")
           swiftClassAttributes.push(attribute)
         elsif value.is_a? Hash
           newSwiftClass = generate_attributes_literals value
           @parsed.store(key.capitalize.camelize, newSwiftClass)
-          # string = "#{get_attribute_literal_prefix}var #{key}: #{key.capitalize}?\n"
-          # swiftClass = swiftClass + string
           attribute = Attribute.new(key, "#{key}")
           swiftClassAttributes.push(attribute)
         elsif value.is_a? Array
           if value.first.is_a? Hash
             newSwiftClass = generate_attributes_literals value.first
             @parsed.store(key.capitalize.camelize, newSwiftClass)
-            # string = "var #{key}#{get_array_attribute_literal key}\n"
-            # swiftClass = swiftClass + string
             attribute = Attribute.new(key, "#{key}", true)
             swiftClassAttributes.push(attribute)
           else
-            # string = "var #{key}: [#{attribute_type value.first}] = []\n"
-            # swiftClass = swiftClass + string
             attribute = Attribute.new(key, "#{attribute_type value.first}", true)
             swiftClassAttributes.push(attribute)
           end
         end
+      end
+    elsif json.is_a? Array
+      if json.first.is_a? Hash
+        generate_attributes_literals json.first
       end
     end
     # swiftClass
@@ -162,6 +161,11 @@ DEFAULT
       end
 
       class_model = <<-CLASS
+//
+// Created with veda-apps.
+// https://rubygems.org/gems/veda-apps
+//
+import Foundation
 import ObjectMapper
 #{@realm? "import RealmSwift\nimport ObjectMapper_Realm" : ""}
 
@@ -207,6 +211,11 @@ CLASS
     end
 
     class_model = <<-CLASS
+//
+// Created with veda-apps.
+// https://rubygems.org/gems/veda-apps
+//
+import Foundation
 import Moya
 import Mapper
 
