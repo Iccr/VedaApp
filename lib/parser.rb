@@ -6,6 +6,9 @@ require 'uri'
 class String
     def camelize
       filtered = self.split('_').select {|v| v != ""}
+      if self == ""
+        return "--INVALID--"
+      end
       camel_text = filtered[1..-1].collect(&:capitalize).join
       camel_text = filtered.first.nil? ? self : (filtered.first + camel_text)
       camel_text.unHyphoniezed
@@ -112,7 +115,8 @@ class Parser
       end
     elsif json.is_a? Array
       if json.first.is_a? Hash
-        generate_attributes_literals json.first
+        newSwiftClass = generate_attributes_literals json.first
+        @parsed.store("TOPLEVELCONTAINER", newSwiftClass)
       end
     end
     # swiftClass
