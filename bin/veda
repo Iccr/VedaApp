@@ -24,6 +24,7 @@ command :generate do |c|
 c.desc "Generates model for swift from config file or json file"
 c.command :model do |m|
   m.switch [:r, :realm, 'option_to_generate_models_for_realm']
+  m.flag ["m", "moya", 'option_to_generate_models_for_Moya_mapper']
   m.flag [:f, :file, 'file_path_to_json']
 
   # creates config.json
@@ -58,7 +59,19 @@ c.command :model do |m|
         puts "cannot find file: #{filepath}"
         puts "use: 'veda generate model config' to generate the configuration file at working directory."
       end
-    elsif
+    elsif options[:m]
+      puts "generating moya files"
+      filepath = options[:moya]
+      puts filepath
+      if File.exist?(filepath)
+        puts "creating parser with file #{filepath} and #{options[:realm]}"
+        parser = Parser.new filepath, options[:realm]
+        parser.parseForMoya!
+      else
+        puts "cannot find file: #{filepath}"
+        puts "use: 'veda generate model config' to generate the configuration file at working directory."
+      end
+    else
       config_path = Dir.pwd + "/" + "config.json"
       if File.exist?config_path
         puts "loading parser with config.json and realm = #{options[:realm]}"
