@@ -195,12 +195,12 @@ CLASS
       mapping_literal = ""
       key_literal = ""
       if attribute.is_array
-        attribute_literal = "\t\tlet #{attribute.name.camelize}: [#{attribute.type.capitalize}]\n"
+        attribute_literal = "\tlet #{attribute.name.camelize}: [#{attribute.type.capitalize}]\n"
       else
-        attribute_literal = "\t\tlet #{attribute.name.camelize}: #{attribute.type.capitalize}\n"
+        attribute_literal = "\tlet #{attribute.name.camelize}: #{attribute.type.capitalize}\n"
       end
-      mapping_literal = "\t\t\t\t#{attribute.name.camelize} = try map.from(Key.#{attribute.name})\n"
-      key_literal = "\t\t\t\tstatic let #{attribute.name.camelize} = \"#{attribute.name}\"\n"
+      mapping_literal = "\t\t#{attribute.name.camelize} = try map.from(Key.#{attribute.name.camelize})\n"
+      key_literal = "\t\tstatic let #{attribute.name.camelize} = \"#{attribute.name}\"\n"
       attribute_literals += attribute_literal
       mapping_literals += mapping_literal
       key_literals += key_literal
@@ -212,13 +212,13 @@ import Mapper
 
 struct #{class_name}: Mappable {
 #{attribute_literals}
-\t\tinit(map: Mapper) throws {
+\tinit(map: Mapper) throws {
 #{mapping_literals}
-\t\t}
+\t}
 
-\t\tstruct Key {
-\t\t\t\t#{key_literals}
-\t\t}
+\tstruct Key {
+#{key_literals}
+\t}
 }\n
 CLASS
     create_file class_name, class_model
