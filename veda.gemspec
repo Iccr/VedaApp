@@ -3,7 +3,7 @@ require File.join([File.dirname(__FILE__),'lib','veda','version.rb'])
 spec = Gem::Specification.new do |s|
   s.name = 'veda-apps'
   s.version = Veda::VERSION
-  s.author = 'Shishir sapkota'
+  s.authors = ['Shishir sapkota', 'Bibek sharma timalsina']
   s.email = 'sis.ccr@gmail.com'
   s.homepage = 'https://github.com/Iccr'
   s.platform = Gem::Platform::RUBY
