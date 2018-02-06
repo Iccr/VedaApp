@@ -2,6 +2,7 @@ require 'json'
 require 'rest-client'
 require 'uri'
 
+$language = ""
 
 class String
     def camelize
@@ -9,17 +10,22 @@ class String
       if self == ""
         return "null"
       end
-      camel_text = filtered[1..-1].collect(&:capitalize).join
+      camel_text = filtered[1..-1].collect(&:cap_capitalize).join
       camel_text = filtered.first.nil? ? self : (filtered.first + camel_text)
       camel_text.unHyphoniezed
     end
   
     def unHyphoniezed
       splitted = self.split('-')
-      camel_text = splitted[1..-1].collect(&:capitalize).join
+      camel_text = splitted[1..-1].collect(&:cap_capitalize).join
       splitted.first.nil? ? self : (splitted.first + camel_text)
     end
-  end
+
+    def cap_capitalize
+      self.capitalize
+    end
+    
+end
 
 class Parser
   def initialize path, realm=false
@@ -79,11 +85,11 @@ class Parser
   end
 
   def get_array_attribute_literal type
-    @realm ? " = List<#{type.capitalize.camelize}>()" : ": [#{type.capitalize}] = []"
+    @realm ? " = List<#{type.cap_capitalize.camelize}>()" : ": [#{type.cap_capitalize}] = []"
   end
 
   def get_array_mapping_literal type
-    @realm ? "(map[\"#{type}\"], ListTransform<#{type.capitalize.camelize}>())" : "map[\"#{type}\"]"
+    @realm ? "(map[\"#{type}\"], ListTransform<#{type.cap_capitalize.camelize}>())" : "map[\"#{type}\"]"
   end
 
   def generate_attributes_literals json
@@ -99,13 +105,13 @@ class Parser
           swiftClassAttributes.push(attribute)
         elsif value.is_a? Hash
           newSwiftClass = generate_attributes_literals value
-          @parsed.store(key.capitalize.camelize, newSwiftClass)
+          @parsed.store(key.cap_capitalize.camelize, newSwiftClass)
           attribute = Attribute.new(key, "#{key}")
           swiftClassAttributes.push(attribute)
         elsif value.is_a? Array
           if value.first.is_a? Hash
             newSwiftClass = generate_attributes_literals value.first
-            @parsed.store(key.capitalize.camelize, newSwiftClass)
+            @parsed.store(key.cap_capitalize.camelize, newSwiftClass)
             attribute = Attribute.new(key, "#{key}", true)
             swiftClassAttributes.push(attribute)
           else
@@ -125,6 +131,7 @@ class Parser
   end
 
   def parse!
+    $language = "swift"
     swiftClass = generate_attributes_literals @json
     if @json.is_a? Hash
       @parsed.store("Container", swiftClass)
@@ -153,12 +160,12 @@ DEFAULT
         attribute_literal = ""
         mapping_literal = ""
         if attribute.is_array
-          attribute_literal = "\t\tvar #{attribute.name.camelize}#{get_array_attribute_literal attribute.type}\n"
-          mapping_literal = "\t\t\t\t#{attribute.name.camelize} <- #{get_array_mapping_literal attribute.type}\n"
+          attribute_literal = "\t\tvar #{attribute.name.camelize}#{get_array_attribute_literal attribute.type_name}\n"
+          mapping_literal = "\t\t\t\t#{attribute.name.camelize} <- #{get_array_mapping_literal attribute.type_name}\n"
         else
           default_value = attribute.default_value
           default_value = default_value.nil? ? "?" : " = #{default_value}"
-          attribute_literal = "\t\t#{get_attribute_literal_prefix}var #{attribute.name.camelize}: #{attribute.type.capitalize}#{default_value}\n"
+          attribute_literal = "\t\t#{get_attribute_literal_prefix}var #{attribute.name.camelize}: #{attribute.type_name.cap_capitalize}#{default_value}\n"
           mapping_literal = "\t\t\t\t#{attribute.name.camelize} <- map[\"#{attribute.name}\"]\n"
         end
         attribute_literals += attribute_literal
@@ -189,7 +196,7 @@ CLASS
 
  # parser for moya model mapper
  def parseForMoya!
-  
+  $language = "swift"
   swiftClass = generate_attributes_literals @json
   if @json.is_a? Hash
     @parsed.store("Container", swiftClass)
@@ -204,9 +211,9 @@ CLASS
       mapping_literal = ""
       key_literal = ""
       if attribute.is_array
-        attribute_literal = "\tlet #{attribute.name.camelize}: [#{attribute.type.capitalize.camelize}]\n"
+        attribute_literal = "\tlet #{attribute.name.camelize}: [#{attribute.type_name.cap_capitalize.camelize}]\n"
       else
-        attribute_literal = "\tlet #{attribute.name.camelize}: #{attribute.type.capitalize.camelize}\n"
+        attribute_literal = "\tlet #{attribute.name.camelize}: #{attribute.type_name.cap_capitalize.camelize}\n"
       end
       mapping_literal = "\t\t#{attribute.name.camelize} = try map.from(Key.#{attribute.name.camelize})\n"
       key_literal = "\t\tstatic let #{attribute.name.camelize} = \"#{attribute.name}\"\n"
@@ -247,7 +254,7 @@ end
 
 # parser for android
 def parseForAndroid!
-  
+  $language = "java"
   swiftClass = generate_attributes_literals @json
   if @json.is_a? Hash
     @parsed.store("Container", swiftClass)
@@ -255,30 +262,46 @@ def parseForAndroid!
   all_content = ""
   @parsed.each do |class_name, attributes|
     attribute_literals = ""
-    mapping_literals = ""
-    key_literals = ""
+    getter_setter_literals = ""
     attributes.each do |attribute|
       attribute_literal = ""
-      mapping_literal = ""
-      key_literal = ""
+      getter_setter_literal = ""
       if attribute.is_array
         attribute_literal = <<-Attribute
 \t@SerializedName(\"#{attribute.name}\")
 \t@Expose
-\tprivate List<#{attribute.type.capitalize.camelize}> #{attribute.name.camelize} = null;\n
+\tprivate List<#{attribute.type_name.cap_capitalize.camelize}> #{attribute.name.camelize} = null;\n
 Attribute
+        getter_setter_literal = <<-GETTER
+\tpublic List<#{attribute.type_name.cap_capitalize.camelize}> get#{attribute.name.camelize.cap_capitalize}() {
+\t\treturn #{attribute.name.camelize};
+\t}
+
+\tpublic void set#{attribute.name.camelize.cap_capitalize}(List<#{attribute.type_name.cap_capitalize.camelize}> #{attribute.name.camelize}) {
+\t\tthis.#{attribute.name.camelize} = #{attribute.name.camelize};
+\t}\n
+GETTER
       else
         attribute_literal = <<-Attribute
 \t@SerializedName(\"#{attribute.name}\")
 \t@Expose
-\tprivate #{attribute.type.capitalize.camelize} #{attribute.name.camelize};\n
+\tprivate #{attribute.type_name.cap_capitalize.camelize} #{attribute.name.camelize};\n
 Attribute
+
+      getter_setter_literal = <<-GETTER
+\tpublic #{attribute.type_name.cap_capitalize.camelize} get#{attribute.name.camelize.cap_capitalize}() {
+\t\treturn #{attribute.name.camelize};
+\t}
+
+\tpublic void set#{attribute.name.camelize.cap_capitalize}(#{attribute.type_name.cap_capitalize.camelize} #{attribute.name.camelize}) {
+\t\tthis.#{attribute.name.camelize} = #{attribute.name.camelize};
+\t}\n
+GETTER
+
       end
-      mapping_literal = "\t\t#{attribute.name.camelize} = try map.from(Key.#{attribute.name.camelize})\n"
-      key_literal = "\t\tstatic let #{attribute.name.camelize} = \"#{attribute.name}\"\n"
       attribute_literals += attribute_literal
-      mapping_literals += mapping_literal
-      key_literals += key_literal
+      getter_setter_literals += getter_setter_literal
+      
     end
 
     class_model = <<-CLASS
@@ -294,6 +317,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class #{class_name} {
 #{attribute_literals}
+#{getter_setter_literals}
 }
 CLASS
     all_content += ("\n\n"  + class_model)
@@ -310,6 +334,36 @@ class Attribute
     @name = name
     @type = type
     @is_array = is_array
+  end
+
+  def type_name
+    puts "--#{@type}--#{name}--#{$language}--"
+    result = @type
+    case @type
+    when "String"
+      result = "String"
+    when "Int"
+      case $language
+      when "swift"
+        result = "Int"
+      when "kotlin"
+        result = "Int"
+      when "java"
+        result = "Integer"
+      end
+    when "Double"
+      result = "Double"
+    when "Bool"
+      case $language
+      when "swift"
+        result = "Bool"
+      when "kotlin"
+        result = "Boolean"
+      when "java"
+        result = "boolean"
+      end
+    end
+    result
   end
 
   def default_value
