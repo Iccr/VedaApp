@@ -27,6 +27,7 @@ c.command :model do |m|
   m.flag ["m", "moya", 'option_to_generate_models_for_Moya_mapper']
   m.flag [:f, :file, 'file_path_to_json']
   m.flag [:a, "android", 'option_to_generate_models_for_android_mapper']
+  m.flag [:k, "kotlin", 'option_to_generate_models_for_kotlin_mapper']
 
   # creates config.json
   m.desc 'generates config.json file at working directory'
@@ -80,6 +81,18 @@ c.command :model do |m|
         puts "creating parser with file #{filepath} and #{options[:realm]}"
         parser = Parser.new filepath, options[:realm]
         parser.parseForAndroid!
+      else
+        puts "cannot find file: #{filepath}"
+        puts "use: 'veda generate model config' to generate the configuration file at working directory."
+      end
+    elsif options[:k]
+      puts "generating kotlin files"
+      filepath = options[:k]
+      puts filepath
+      if File.exist?(filepath)
+        puts "creating parser with file #{filepath} and #{options[:realm]}"
+        parser = Parser.new filepath, options[:realm]
+        parser.parseForKotlin!
       else
         puts "cannot find file: #{filepath}"
         puts "use: 'veda generate model config' to generate the configuration file at working directory."

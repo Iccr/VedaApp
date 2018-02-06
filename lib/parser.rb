@@ -323,8 +323,59 @@ CLASS
   all_content += ("\n\n"  + class_model)
   create_file class_name, class_model, ".java"
 end
-create_file "ALLCONTENT", all_content
+create_file "ALLCONTENT", all_content, ".java"
 end
+
+
+# parser for kotlin
+def parseForKotlin!
+  $language = "kotlin"
+  swiftClass = generate_attributes_literals @json
+  if @json.is_a? Hash
+    @parsed.store("Container", swiftClass)
+  end
+  all_content = ""
+  @parsed.each do |class_name, attributes|
+    attribute_literals = ""
+    attributes.each do |attribute|
+      attribute_literal = ""
+      if attribute.is_array
+        attribute_literal = <<-Attribute
+  \t@SerializedName(\"#{attribute.name}\")
+  \t@Expose
+  \tvar #{attribute.name.camelize}: ArrayList<#{attribute.type_name}>? = null\n
+  Attribute
+      else
+        attribute_literal = <<-Attribute
+  \t@SerializedName(\"#{attribute.name}\")
+  \t@Expose
+  \tvar #{attribute.name.camelize}: #{attribute.type_name}? = null\n
+  Attribute
+  
+      end
+      attribute_literals += attribute_literal
+      
+    end
+  
+    class_model = <<-CLASS
+  //
+  // Created with veda-apps.
+  // https://rubygems.org/gems/veda-apps
+  //
+  
+  // package com.example;
+  import com.google.gson.annotations.Expose;
+  import com.google.gson.annotations.SerializedName;
+  
+  class #{class_name} {
+  #{attribute_literals}
+  }
+  CLASS
+    all_content += ("\n\n"  + class_model)
+    create_file class_name, class_model, ".kt"
+  end
+  create_file "ALLCONTENT", all_content, ".kt"
+  end
 
 end
 
