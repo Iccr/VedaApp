@@ -69,6 +69,7 @@ class Parser
         File.open(_filename,  "w") do |file|
             file.write content
             puts "created file #{_filename}"
+            # puts content
         end
       # end
   end
@@ -193,7 +194,7 @@ CLASS
   if @json.is_a? Hash
     @parsed.store("Container", swiftClass)
   end
-
+  all_content = ""
   @parsed.each do |class_name, attributes|
     attribute_literals = ""
     mapping_literals = ""
@@ -219,12 +220,16 @@ CLASS
 // Created with veda-apps.
 // https://rubygems.org/gems/veda-apps
 //
+
 import Foundation
 import Moya
 import Mapper
 
-struct #{class_name}: Mappable {
+struct #{class_name} {
 #{attribute_literals}
+}
+
+extension #{class_name}: Mappable {
 \tinit(map: Mapper) throws {
 #{mapping_literals}
 \t}
@@ -234,8 +239,10 @@ struct #{class_name}: Mappable {
 \t}
 }\n
 CLASS
+    all_content += ("\n\n"  + class_model)
     create_file class_name, class_model
   end
+  create_file "ALLCONTENT", all_content
 end
  
 end
