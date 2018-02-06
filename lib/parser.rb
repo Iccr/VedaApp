@@ -7,7 +7,7 @@ class String
     def camelize
       filtered = self.split('_').select {|v| v != ""}
       if self == ""
-        return "--INVALID--"
+        return "null"
       end
       camel_text = filtered[1..-1].collect(&:capitalize).join
       camel_text = filtered.first.nil? ? self : (filtered.first + camel_text)
@@ -64,8 +64,8 @@ class Parser
     result
   end
 
-  def create_file filename, content
-    _filename = filename + ".swift"
+  def create_file filename, content, extension='.swift'
+    _filename = filename + extension
         File.open(_filename,  "w") do |file|
             file.write content
             puts "created file #{_filename}"
@@ -241,6 +241,63 @@ extension #{class_name}: Mappable {
 CLASS
     all_content += ("\n\n"  + class_model)
     create_file class_name, class_model
+  end
+  create_file "ALLCONTENT", all_content
+end
+
+# parser for android
+def parseForAndroid!
+  
+  swiftClass = generate_attributes_literals @json
+  if @json.is_a? Hash
+    @parsed.store("Container", swiftClass)
+  end
+  all_content = ""
+  @parsed.each do |class_name, attributes|
+    attribute_literals = ""
+    mapping_literals = ""
+    key_literals = ""
+    attributes.each do |attribute|
+      attribute_literal = ""
+      mapping_literal = ""
+      key_literal = ""
+      if attribute.is_array
+        attribute_literal = <<-Attribute
+\t@SerializedName(\"#{attribute.name}\")
+\t@Expose
+\tprivate List<#{attribute.type.capitalize.camelize}> #{attribute.name.camelize} = null;\n
+Attribute
+      else
+        attribute_literal = <<-Attribute
+\t@SerializedName(\"#{attribute.name}\")
+\t@Expose
+\tprivate #{attribute.type.capitalize.camelize} #{attribute.name.camelize};\n
+Attribute
+      end
+      mapping_literal = "\t\t#{attribute.name.camelize} = try map.from(Key.#{attribute.name.camelize})\n"
+      key_literal = "\t\tstatic let #{attribute.name.camelize} = \"#{attribute.name}\"\n"
+      attribute_literals += attribute_literal
+      mapping_literals += mapping_literal
+      key_literals += key_literal
+    end
+
+    class_model = <<-CLASS
+//
+// Created with veda-apps.
+// https://rubygems.org/gems/veda-apps
+//
+
+// package com.example;
+import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+public class #{class_name} {
+#{attribute_literals}
+}
+CLASS
+    all_content += ("\n\n"  + class_model)
+    create_file class_name, class_model, ".java"
   end
   create_file "ALLCONTENT", all_content
 end
