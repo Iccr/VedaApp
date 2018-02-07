@@ -129,6 +129,27 @@ c.command :qr do |q|
   end
 end
 
+
+
+
+c.desc 'generates qrScanner at  path specified after -f flag'
+c.command :web_view do |q|
+  q.flag [:f,:filename,'file_path_for_viewcontroller']
+  q.action do |global_options, options, args|
+      path = options[:f]
+      if path.nil?
+        puts "\nERROR: No file path given.  \n HINT: veda generate qr -f path_to_viewController.swift_file"
+      else
+        if File.file?(path)
+          generate_web_view path
+        else
+          raise "#{path}. File does not exist."
+        end
+      end
+  end
+end
+
+
 desc 'genefates multimedia at specified path'
 c.command :mm do |m|
   m.action do |global_options, opotions, args|
@@ -148,7 +169,20 @@ def generate_qr path
   qr.generate_qr path
 end
 
+def generate_qr path
+  qr = Web::WebView.new
+  qr.generate_web_view path
+end
+
 def generate_multimedia
 
 end
 exit run(ARGV)
+
+# func showWebView(url: String, title: String) {
+#         logger(url)
+#         let web = WebLinksViewController()
+#         web.url = url
+#         web.titleString = title
+#         navigationController?.pushViewController(web, animated: true)
+#     }
