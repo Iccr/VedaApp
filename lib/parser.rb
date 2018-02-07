@@ -24,7 +24,7 @@ class String
   def cap_capitalize
     self.capitalize
   end
-  
+
 end
 
 class Parser
@@ -301,7 +301,7 @@ GETTER
     end
     attribute_literals += attribute_literal
     getter_setter_literals += getter_setter_literal
-    
+
   end
 
   class_model = <<-CLASS
@@ -351,22 +351,22 @@ def parseForKotlin!
   \t@Expose
   \tvar #{attribute.name.camelize}: #{attribute.type_name}? = null\n
   Attribute
-  
+
       end
       attribute_literals += attribute_literal
-      
+
     end
-  
+
     class_model = <<-CLASS
   //
   // Created with veda-apps.
   // https://rubygems.org/gems/veda-apps
   //
-  
+
   // package com.example;
   import com.google.gson.annotations.Expose;
   import com.google.gson.annotations.SerializedName;
-  
+
   class #{class_name} {
   #{attribute_literals}
   }
@@ -388,7 +388,6 @@ def initialize name, type, is_array=false
 end
 
 def type_name
-  puts "--#{@type}--#{name}--#{$language}--"
   result = @type.cap_capitalize.camelize
   case @type
   when "String"
