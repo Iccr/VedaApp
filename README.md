@@ -11,6 +11,8 @@ examples:
 
 ```veda generate model input.json```
 
+```veda generate webview -f path_to_view_controller```
+
 ### Wikis
 #### QR scanner
 
@@ -20,6 +22,11 @@ https://github.com/Iccr/VedaApp/wiki/QRScanner
 #### Automatically Generate models from url: 
 
 https://github.com/Iccr/VedaApp/wiki/swift-model-generator
+
+
+####  Generate webview controllers: 
+
+https://github.com/Iccr/VedaApp/wiki/webView
 
 
 ###### feedback are welcomed
