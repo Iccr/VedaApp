@@ -3,6 +3,7 @@ require 'gli'
 # begin # XXX: Remove this begin/rescue before distributing your app
 require 'veda'
 require 'qR'
+require 'webview'
 # require "parser.rb"
 require 'parser'
 
@@ -169,7 +170,7 @@ def generate_qr path
   qr.generate_qr path
 end
 
-def generate_qr path
+def generate_web_view path
   qr = Web::WebView.new
   qr.generate_web_view path
 end

@@ -3,7 +3,7 @@ module Web
     require 'fileutils'
     def generate_web_view path
       web_view_storyboard_path = root + '/lib/VedaWebView/Storyboard.storyboard'
-      web_view_viewcontroller_path = root + '/lib/VedaWebView/WebLinksViewController.swift.swift'
+      web_view_viewcontroller_path = root + '/lib/VedaWebView/WebLinksViewController.swift'
 
       dest_folder = dest_folder_path path
       copy web_view_storyboard_path, dest_folder
