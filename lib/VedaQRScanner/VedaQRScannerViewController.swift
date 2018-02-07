@@ -1,9 +1,10 @@
-//  Created by shishir sapkota on 1/17/18.
-//  Copyright © 2018 ccr. All rights reserved.
+
+//  WebLinksViewController.swift
 //
-//  QRCodeScannerViewController.swift
-//  Created by Iccr
-// https://github.com/Iccr
+// Created with veda-apps.
+// https://rubygems.org/gems/veda-apps
+//
+
 
 import UIKit
 import AVFoundation

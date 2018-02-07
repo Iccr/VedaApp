@@ -1,11 +1,9 @@
-//
-//  WebLinksViewController.swift
-//  Sipradi
-//
-//  Created by shishir sapkota on 7/26/17.
-//  Copyright © 2017 Ekbana. All rights reserved.
-//
 
+//  WebLinksViewController.swift
+//
+// Created with veda-apps.
+// https://rubygems.org/gems/veda-apps
+//
 
 
 import Foundation
